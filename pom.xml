@@ -13,6 +13,7 @@
         <module>eurkea_server_13000</module>
         <module>eurkea_server_13001</module>
         <module>Service_Provider_11001</module>
+        <module>gate_server_14000</module>
     </modules>
     <packaging>pom</packaging>
     <properties>

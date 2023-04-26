@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="gate_server_14000" />
         <module name="Service_Provider_11001" />
         <module name="service_provider_11000" />
         <module name="consumer_server_12000" />
@@ -13,5 +14,9 @@
         <module name="eurkea_server_13001" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="gateway_server_14000" target="17" />
+      <module name="Gateway_server_14000" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
