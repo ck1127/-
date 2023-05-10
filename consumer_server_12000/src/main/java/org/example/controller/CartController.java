@@ -1,5 +1,7 @@
 package org.example.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
@@ -12,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -29,6 +28,7 @@ public class CartController {
     private UserFeignService userFeignService;
 
     @GetMapping("/hello")
+    @CircuitBreaker(name = "backendA",fallbackMethod = "fallbackHello")
     public String hello(){
         return userFeignService.Hello();
     }
@@ -69,4 +69,26 @@ public class CartController {
 //        });
 //        return result;
 //    }
+
+    public String fallbackHello(Throwable e){
+        e.printStackTrace();
+        System.out.println("fallback已经调用");
+        String s = "fallback";
+        return s;
+    }
+
+
+    @GetMapping("/testHotKey")
+    @SentinelResource(value = "testHotKey", blockHandler = "dealHandler_testHotKey")
+    public String testHotKey(@RequestParam(value = "p1", required = false) String p1,
+                             @RequestParam(value = "p2", required = false) String p2) {
+        System.out.println("------testHotKey");
+        return "------testHotKey";
+    }
+
+    public String dealHandler_testHotKey(String p1, String p2, BlockException exception) {
+        // 默认 Blocked by Sentinel (flow limiting)
+        System.out.println("-----dealHandler_testHotKey");
+        return "-----dealHandler_testHotKey";
+    }
 }

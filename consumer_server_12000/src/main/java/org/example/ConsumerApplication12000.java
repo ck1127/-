@@ -16,11 +16,11 @@ import org.springframework.web.client.RestTemplate;
 public class ConsumerApplication12000 {
 
 
-//    @Bean
-//    @LoadBalanced
-//    public RestTemplate getRestTemplate(){
-//        return new RestTemplate();
-//    }
+    @Bean
+    @LoadBalanced
+    public RestTemplate getRestTemplate(){
+        return new RestTemplate();
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(ConsumerApplication12000.class,args);
